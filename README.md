@@ -40,8 +40,8 @@ public class AClass
 
 The following assertions are available:
 
-- **Boolean Assertions * *
- - `isTrue(bool condition, string message, object context = null)`: Verifies that a condition is true.
+- **Boolean Assertions**
+  - `isTrue(bool condition, string message, object context = null)`: Verifies that a condition is true.
   - `isFalse(bool condition, string message)`: Verifies that a condition is false.
   
 - **Null Checks**
