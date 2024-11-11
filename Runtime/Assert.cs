@@ -48,19 +48,15 @@ namespace EyE.Debug
         /// </summary>
         public class FailedAssertionException : Exception
         {
-            string customMessage;
             /// <summary>
             /// Initializes a new instance of the <see cref="FailedAssertionException"/> class with a specified error message.
             /// </summary>
             /// <param name="message">The error message.</param>
             public FailedAssertionException(string message, object context = null) : base(ContextMessage(context) + message)
-            {
-                customMessage = ContextMessage(context) + message;
-            }
-            public FailedAssertionException(string message, System.Type displayType, object context = null) : base(ContextMessage(context) + message)
-            {
-                customMessage = "[" + displayType.Name + "]: " + ContextMessage(context) + message;
-            }
+            { }
+            public FailedAssertionException(string message, System.Type displayType, object context = null)
+                : base("<" + displayType.Name + "> " + ContextMessage(context) + message)
+            { }
         }
 
 
