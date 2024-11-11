@@ -8,8 +8,8 @@ namespace EyE.Debug
     /// These methods throw FailedAssertionExceptions when conditions are not met, allowing for
     /// easier identification of issues during development. All assertions are 
     /// conditionally compiled to be included only in DEBUG builds.
-    /// Using the functions that have generic parameters will include the type name in any failed assertion messages that are generated.
-    /// Or, one can use the non-generic versions, if desired.
+    ///  The generic methods are provided for convenience only:  The specified type is used for type name display purposes, rather than type safety.
+    ///  Most methods have an optional "context" object parameter, which may be included as a parameter.The object's ToString() method will be used to generate text for display purposes.
     /// </summary>
     public static class Assert
     {
@@ -61,11 +61,12 @@ namespace EyE.Debug
         /// </summary>
         /// <param name="b">The condition to evaluate.</param>
         /// <param name="message">The message to include in the exception if the assertion fails.</param>
+        /// <param name="context">Optional "context" object, will be included in any exceptions thrown, via ToString()</param>
         [Conditional(DebugCompilerDefinedConstant)]
         public static void isTrue(bool b, string message, object context = null)
         {
             if (!b)
-                throw new FailedAssertionException(message);
+                throw new FailedAssertionException(message,context);
         }
 
         /// <summary>
@@ -73,11 +74,12 @@ namespace EyE.Debug
         /// </summary>
         /// <param name="b">The condition to evaluate.</param>
         /// <param name="message">The message to include in the exception if the assertion fails.</param>
+        /// <param name="context">Optional "context" object, will be included in any exceptions thrown, via ToString()</param>
         [Conditional(DebugCompilerDefinedConstant)]
-        public static void isFalse(bool b, string message)
+        public static void isFalse(bool b, string message, object context = null)
         {
             if (b)
-                throw new FailedAssertionException(message);
+                throw new FailedAssertionException(message, context);
         }
 
         /// <summary>
@@ -85,12 +87,13 @@ namespace EyE.Debug
         /// </summary>
         /// <param name="obj">The object to evaluate.</param>
         /// <param name="message">The message to include in the exception if the assertion fails.</param>
+        /// <param name="context">Optional "context" object, will be included in any exceptions thrown, via ToString()</param>
         [Conditional(DebugCompilerDefinedConstant)]
-        public static void isNotNull(object obj, string message)
+        public static void isNotNull(object obj, string message, object context = null)
         {
             if (obj == null)
-                throw new FailedAssertionException(message);
-        }
+                throw new FailedAssertionException(message, context);
+    }
 
         /// <summary>
         /// Asserts that all objects are not null. Throws <see cref="FailedAssertionException"/> if any object is null.
@@ -105,29 +108,44 @@ namespace EyE.Debug
                     throw new FailedAssertionException(message);
         }
         /// <summary>
+        /// Asserts that all objects are not null. Throws <see cref="FailedAssertionException"/> if any object is null.
+        /// </summary>
+        /// <param name="message">The message to include in the exception if the assertion fails.</param>
+        /// <param name="context">This "context" object, will be included in any exceptions thrown, via ToString()</param>
+        /// <param name="objs">The objects to evaluate.</param>
+        [Conditional(DebugCompilerDefinedConstant)]
+        public static void areNotNullWithContext(string message, object context, params object[] objs)
+        {
+            foreach (object obj in objs)
+                if (obj == null)
+                    throw new FailedAssertionException(message);
+        }
+        /// <summary>
         /// Asserts that two values are equal. Throws <see cref="FailedAssertionException{T}"/> if they are not equal.
         /// </summary>
         /// <typeparam name="T">The type of the values to compare, must support equality comparison. </typeparam>
         /// <param name="expected">The expected value.</param>
         /// <param name="actual">The actual value.</param>
         /// <param name="message">The message to include in the exception if the assertion fails.</param>
+        /// <param name="context">Optional "context" object, will be included in any exceptions thrown, via ToString()</param>
         /// <exception cref="InvalidOperationException">Thrown if the types of <paramref name="expected"/> and <paramref name="actual"/> cannot be compared for equality.</exception>
         [Conditional(DebugCompilerDefinedConstant)]
-        public static void isEqual<TValueType>(TValueType expected, TValueType actual, string message) where TValueType : IEquatable<TValueType>
+        public static void isEqual<TValueType>(TValueType expected, TValueType actual, string message, object context = null) where TValueType : IEquatable<TValueType>
         {
             if (!expected.Equals(actual))
-                throw new FailedAssertionException(message);
+                throw new FailedAssertionException(message,context);
         }
         /// <summary>
         /// Asserts that the result of a function is true. Throws <see cref="FailedAssertionException"/> if the result is false.
         /// </summary>
         /// <param name="bFunc">The function to evaluate.</param>
         /// <param name="message">The message to include in the exception if the assertion fails.</param>
+        /// <param name="context">Optional "context" object, will be included in any exceptions thrown, via ToString()</param>
         [Conditional(DebugCompilerDefinedConstant)]
-        public static void expensiveIsTrue(System.Func<bool> bFunc, string message)
+        public static void expensiveIsTrue(System.Func<bool> bFunc, string message, object context = null)
         {
             if (!bFunc())
-                throw new FailedAssertionException(message);
+                throw new FailedAssertionException(message,context);
         }
 
         /// <summary>
@@ -136,11 +154,12 @@ namespace EyE.Debug
         /// <typeparam name="T">The type related to the failed assertion.  Usually, this is the class calling the assertion.</typeparam>
         /// <param name="b">The condition to evaluate.</param>
         /// <param name="message">The message to include in the exception if the assertion fails.</param>
+        /// <param name="context">Optional "context" object, will be included in any exceptions thrown, via ToString()</param>
         [Conditional(DebugCompilerDefinedConstant)]
-        public static void isTrue<T>(bool b, string message)
+        public static void isTrue<T>(bool b, string message, object context = null)
         {
             if (!b)
-                throw new FailedAssertionException<T>(message);
+                throw new FailedAssertionException<T>(message,context);
         }
 
         /// <summary>
@@ -149,11 +168,12 @@ namespace EyE.Debug
         /// <typeparam name="T">The type related to the failed assertion.  Usually, this is the class calling the assertion.</typeparam>
         /// <param name="b">The condition to evaluate.</param>
         /// <param name="message">The message to include in the exception if the assertion fails.</param>
+        /// <param name="context">Optional "context" object, will be included in any exceptions thrown, via ToString()</param>
         [Conditional(DebugCompilerDefinedConstant)]
-        public static void isFalse<T>(bool b, string message)
+        public static void isFalse<T>(bool b, string message, object context = null)
         {
             if (b)
-                throw new FailedAssertionException<T>(message);
+                throw new FailedAssertionException<T>(message, context);
         }
 
         /// <summary>
@@ -162,11 +182,12 @@ namespace EyE.Debug
         /// <typeparam name="T">The type related to the failed assertion.  Usually, this is the class calling the assertion.</typeparam>
         /// <param name="obj">The object to evaluate.</param>
         /// <param name="message">The message to include in the exception if the assertion fails.</param>
+        /// <param name="context">Optional "context" object, will be included in any exceptions thrown, via ToString()</param>
         [Conditional(DebugCompilerDefinedConstant)]
-        public static void isNotNull<T>(object obj, string message)
+        public static void isNotNull<T>(object obj, string message, object context = null)
         {
             if (obj == null)
-                throw new FailedAssertionException<T>(message);
+                throw new FailedAssertionException<T>(message, context);
         }
 
         /// <summary>
@@ -184,16 +205,43 @@ namespace EyE.Debug
         }
 
         /// <summary>
+        /// Asserts that all objects are not null. Throws <see cref="FailedAssertionException{T}"/> if any object is null.
+        /// </summary>
+        /// <typeparam name="T">The type related to the failed assertion.  Usually, this is the class calling the assertion.</typeparam>
+        /// <param name="context">Optional "context" object, will be included in a3ny exceptions thrown, via ToString()</param>
+        /// <param name="message">The message to include in the exception if the assertion fails.</param>
+        /// <param name="objs">The objects to evaluate.</param>
+        [Conditional(DebugCompilerDefinedConstant)]
+        public static void areNotNullWithContext<T>(string message, object context, params object[] objs)
+        {
+            foreach (object obj in objs)
+                if (obj == null)
+                    throw new FailedAssertionException<T>(message,context);
+        }
+        /// <summary>
         /// Asserts that the result of a function is true. Throws <see cref="FailedAssertionException{T}"/> if the result is false.
         /// </summary>
         /// <typeparam name="T">The type related to the failed assertion.  Usually, this is the class calling the assertion.</typeparam>
         /// <param name="bFunc">The function to evaluate.</param>
         /// <param name="message">The message to include in the exception if the assertion fails.</param>
+        /// <param name="context">Optional "context" object, will be included in any exceptions thrown, via ToString()</param>
         [Conditional(DebugCompilerDefinedConstant)]
-        public static void expensiveIsTrue<T>(System.Func<bool> bFunc, string message)
+        public static void expensiveIsTrue<T>(System.Func<bool> bFunc, string message, object context = null)
         {
             if (!bFunc())
-                throw new FailedAssertionException<T>(message);
+                throw new FailedAssertionException<T>(message,context);
+        }
+
+        /// <summary>
+        /// Checks if the object passed is of the type of the Type parameter.
+        /// </summary>
+        /// <typeparam name="TypeOfParamObject"></typeparam>
+        /// <param name="obj">object to check the type of</param>
+        /// <param name="message">type the object should be</param>
+        public static void Is<TypeOfParamObject>(object obj, string message)
+        {
+            if (!(obj is TypeOfParamObject))
+                throw new FailedAssertionException(message);
         }
 
 
@@ -216,12 +264,25 @@ namespace EyE.Debug
 }
 public class AClass
 {
+    float val = 1;
     object ref1;
     object ref2;
+    System.Collections.Generic.List<int> intList = new System.Collections.Generic.List<int>();
 
     public void blash()
     {
-        EyE.Debug.Assert.areNotNull<AClass>("a ref is null", ref1, ref2);
+        EyE.Debug.Assert.isTrue<AClass>(val > 0, "Cannot get Sqrt of negative numbers"); //the typename AClass, with be mentioned in potential output.
+        float f = MathF.Sqrt(val);
+        EyE.Debug.Assert.isFalse(f==0, "Cannot divide by zero",this); //the ToString for this class will be called, and mentioned in potential output.
+        f = 1f / f;
+        Console.WriteLine(f);
+
+        int valToAdd = 749;//SHOULD not be in list
+        EyE.Debug.Assert.expensiveIsTrue<AClass>(() => { return !intList.Contains(valToAdd); }
+                                           , "Cannot added existing items ["+valToAdd+"] to list", this);//the typename for AClass AND the ToString for this class, with be mentioned in potential output.
+        intList.Add(valToAdd);
+        
+        EyE.Debug.Assert.areNotNull<AClass>("a ref is null", ref1, ref2); //the typename AClass, with be mentioned in potential output.
         // do stuff
     }
 }
