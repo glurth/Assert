@@ -5,8 +5,7 @@ using UnityEngine;
 namespace EyE.Debug.Samples
 {
     using Debug = UnityEngine.Debug;
-
-    //[System.Serializable]
+    
     public class TestObj
     {
         public string s = "yo";

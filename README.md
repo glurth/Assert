@@ -40,30 +40,36 @@ Install this package in your Unity project using the Package Manager:
 Example usage:
 
 ```csharp
-public class AClass
-{
-    float val = 1;
-    object ref1;
-    object ref2;
-    System.Collections.Generic.List<int> intList = new System.Collections.Generic.List<int>();
-
-    public void blash()
+    public class AClass : MonoBehaviour
     {
-        EyE.Debug.Assert.isTrue(val > 0, "Cannot get Sqrt of negative numbers",this);
-        float f = MathF.Sqrt(val);
-        EyE.Debug.Assert.isFalse(f==0, "Cannot divide by zero",this);
-        f = 1f / f;
-        Console.WriteLine(f);
+        public float val = 0;
+        public GameObject ref1;
+        public GameObject ref2;
+        public TestObj testObj;
+        public DataS testStruct;
+        public List<int> intList = new List<int>();
 
-        int valToAdd = 749;//SHOULD not be in list
-        EyE.Debug.Assert.expensiveIsTrue(() => { return !intList.Contains(valToAdd); }
-                                           , "Cannot added existing items ["+valToAdd+"] to list", this);
-        intList.Add(valToAdd);
-        
-        EyE.Debug.Assert.areNotNull<AClass>("a ref is null", ref1, ref2);
-        // do stuff
+        public void Start()
+        {
+            Debug.Log("Assertions are active: " + Assert.IsActive());
+        }
+        public void Update()
+        {
+            Assert.isTrue<AClass>(val >= 0, "Cannot get Sqrt of negative numbers"); //the typename AClass, with be mentioned in potential output.
+            float f = Mathf.Sqrt(val);
+            Assert.isFalse(f == 0, "Cannot divide by zero", this); //the ToString for this class will be called, and mentioned in potential output.
+            f = 1f / f;
+
+            int valToAdd = 749;//SHOULD not be in list
+                               // intList.Add(749);// uh oh!!
+            Assert.expensiveIsTrue<AClass>(() => { return !intList.Contains(valToAdd); }
+                                               , "Cannot added existing items [" + valToAdd + "] to list", this);//the typename for AClass AND the ToString for this class, with be mentioned in potential output.
+                                                                                                                 //intList.Add(valToAdd);
+
+            Assert.isNotNull<TestObj>(testObj,"ref is null "); //the typename AClass, with be mentioned in potential output.
+            
+        }
     }
-}
 ```
 ### Assertions
 
