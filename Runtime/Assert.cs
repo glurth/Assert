@@ -17,6 +17,18 @@ namespace EyE.Debug
         private const string DebugCompilerDefinedConstant = "DEBUG";
 
         /// <summary>
+        /// Checks to see if DEBUG is defined, which is required for assertions to work.
+        /// </summary>
+        /// <returns>Returns true when DEBUG is defined, and assertions will work.  False otherwise.</returns>
+        public static bool IsActive()
+        {
+#if DEBUG
+            return true;
+#else
+            return false;
+#endif
+        }
+        /// <summary>
         /// Use by FailedAssertionException constructors to get a string that identifies the context object.
         /// </summary>
         /// <param name="contextObj">the object to identify</param>
@@ -136,6 +148,7 @@ namespace EyE.Debug
                 throw new FailedAssertionException(message,context);
         }
         /// <summary>
+        /// This function is useful when evaluating the exception is expensive, processing wise.  It ensures that the function will NOT be called when ``DEBUG`` is not defined (release build). 
         /// Asserts that the result of a function is true. Throws <see cref="FailedAssertionException"/> if the result is false.
         /// </summary>
         /// <param name="bFunc">The function to evaluate.</param>
@@ -238,6 +251,7 @@ namespace EyE.Debug
         /// <typeparam name="TypeOfParamObject"></typeparam>
         /// <param name="obj">object to check the type of</param>
         /// <param name="message">type the object should be</param>
+        [Conditional(DebugCompilerDefinedConstant)]
         public static void Is<TypeOfParamObject>(object obj, string message)
         {
             if (!(obj is TypeOfParamObject))

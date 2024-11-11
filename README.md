@@ -31,7 +31,9 @@ Install this package in your Unity project using the Package Manager:
 ## Usage
 
  Use the methods provided in `EyE.Debug.Assert` to perform assertions in your code.  The ``DEBUG`` define *must* be set for the assertions to work.
- The generic methods are provided for convenience only:  The specified type is used for type name display purposes, rather than type safety.
+
+ The generic methods are provided for convenience only:  The specified type is used for type name display purposes, rather than type safety.  The exception is the ``Assert.Is<T>`` function, which asserts that the object is of the type specified.
+
  Most methods have an optional "context" object parameter, which may be included as a parameter.  The object's ToString() method will be used to generate text for display purposes.
  
 
