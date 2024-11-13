@@ -41,8 +41,8 @@ namespace EyE.Debug.Samples
             Assert.expensiveIsTrue<AClass>(() => { return !intList.Contains(valToAdd); }
                                                , "Cannot added existing items [" + valToAdd + "] to list", this);//the typename for AClass AND the ToString for this class, with be mentioned in potential output.
                                                                                                                  //intList.Add(valToAdd);
-
-            Assert.isNotNull<TestObj>(testObj,"ref is null "); //the typename AClass, with be mentioned in potential output.
+            Assert.areNotNull("GameObjects are null", ref1, ref2);
+            Assert.isNotNull<TestObj>(testObj,"testObj ref is null "); //the typename AClass, with be mentioned in potential output.
             
         }
     }

@@ -97,7 +97,7 @@ namespace EyE.Debug
         [Conditional(DebugCompilerDefinedConstant)]
         public static void isNotNull(object obj, string message, object context = null)
         {
-            if (obj==null || obj.Equals(null))
+            if(ReferenceEquals(obj,null) || obj.Equals(null))
                 throw new FailedAssertionException(message, context);
     }
 
@@ -121,7 +121,7 @@ namespace EyE.Debug
         public static void areNotNullWithContext(string message, object context, params object[] objs)
         {
             foreach (object obj in objs)
-                if (obj == null || obj.Equals(null))
+                if (ReferenceEquals(obj, null) || obj.Equals(null))
                     throw new FailedAssertionException(message,context);
         }
         /// <summary>
@@ -214,7 +214,7 @@ namespace EyE.Debug
         [Conditional(DebugCompilerDefinedConstant)]
         public static void isNotNull<T>(object obj, string message, object context = null)
         {
-            if (obj == null || obj.Equals(null))
+            if (ReferenceEquals(obj, null) || obj.Equals(null))
                 throw new FailedAssertionException(message, typeof(T), context);
         }
 
@@ -241,7 +241,7 @@ namespace EyE.Debug
         public static void areNotNullWithContext<T>(string message, object context, params object[] objs)
         {
             foreach (object obj in objs)
-                if (obj == null || obj.Equals(null))
+                if (ReferenceEquals(obj, null) || obj.Equals(null))
                     throw new FailedAssertionException(message, typeof(T), context);
         }
         /// <summary>
