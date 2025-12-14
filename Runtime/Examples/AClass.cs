@@ -24,7 +24,7 @@ namespace EyE.Debug.Samples
         public TestObj testObj;
         public DataS testStruct;
         public List<int> intList = new List<int>();
-
+        public float health;
         public void Start()
         {
             Debug.Log("Assertions are active: " + Assert.IsActive());
@@ -42,8 +42,15 @@ namespace EyE.Debug.Samples
                                                , "Cannot added existing items [" + valToAdd + "] to list", this);//the typename for AClass AND the ToString for this class, with be mentioned in potential output.
                                                                                                                  //intList.Add(valToAdd);
             Assert.areNotNull("GameObjects are null", ref1, ref2);
-            Assert.isNotNull<TestObj>(testObj,"testObj ref is null "); //the typename AClass, with be mentioned in potential output.
             
+            Assert.isNotNull<TestObj>(testObj,"testObj ref is null "); //the typename AClass, with be mentioned in potential output.
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                // Suppose weapon triggers a handler, make sure handler is assigned
+                var renderer = gameObject.GetComponent<MeshRenderer>();
+                Assert.isNotNull<MeshRenderer>(renderer, "Weapon object is missing its handler", gameObject);
+            }
         }
     }
 }
