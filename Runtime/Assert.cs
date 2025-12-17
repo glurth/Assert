@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
 
-namespace EyE.Debug
+namespace EyE.Diagnostics
 {
     /// <summary>
     /// Provides a set of assertion methods for validating conditions during debugging.
@@ -18,7 +18,7 @@ namespace EyE.Debug
     public static class Assert
     {
         //conditional string
-        private const string DebugCompilerDefinedConstant = "DEBUG";
+        private const string DebugCompilerDefinedConstant = "EYE_DEBUG";
 
         /// <summary>
         /// Checks to see if DEBUG is defined, which is required for assertions to work.

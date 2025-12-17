@@ -1,6 +1,6 @@
 {
-    "name": "EyE.Debug.Assert",
-    "rootNamespace": "EyE.Debug",
+    "name": "EyE.Diagnostics.Assert",
+    "rootNamespace": "EyE.Diagnostics",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],

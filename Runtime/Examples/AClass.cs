@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace EyE.Debug.Samples
+namespace EyE.Diagnostics.Samples
 {
     using Debug = UnityEngine.Debug;
     
